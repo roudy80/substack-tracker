@@ -47,94 +47,85 @@
     .header-right { display: flex; gap: 8px; align-items: center; }
     .sync-status { font-size: 11px; opacity: 0.85; max-width: 120px; text-align: right; }
     .btn-header {
-      background: rgba(255,255,255,0.2);
-      border: none;
-      color: white;
-      padding: 6px 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 500;
+      background: rgba(255,255,255,0.2); border: none; color: white;
+      padding: 6px 14px; border-radius: 6px; cursor: pointer;
+      font-size: 13px; font-weight: 500;
     }
     .btn-header:hover { background: rgba(255,255,255,0.32); }
     .btn-header:active { background: rgba(255,255,255,0.15); }
 
+    /* Alert banner */
+    .alert-banner {
+      background: #fffbec;
+      border-bottom: 2px solid var(--yellow);
+      padding: 10px 16px;
+    }
+    .alert-banner-top {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 6px;
+    }
+    .alert-banner-title {
+      font-size: 11px; font-weight: 700; color: var(--yellow);
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .alert-dismiss {
+      font-size: 12px; color: var(--text-muted); cursor: pointer;
+      border: none; background: none; padding: 0; font-family: inherit;
+    }
+    .alert-item {
+      font-size: 13px; padding: 4px 0; color: var(--text);
+      border-bottom: 1px solid rgba(154,114,10,0.12);
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;
+    }
+    .alert-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .alert-item-left { flex: 1; }
+    .alert-item-book { font-size: 11px; color: var(--text-muted); }
+    .alert-item-ch { font-size: 13px; font-weight: 500; }
+    .alert-item-date { font-size: 11px; color: var(--yellow); font-weight: 600; margin-top: 1px; }
+    .alert-item-missing { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
     /* Nav */
     .nav-tabs {
-      display: flex;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 0 12px;
-      overflow-x: auto;
+      display: flex; background: var(--surface);
+      border-bottom: 1px solid var(--border); padding: 0 12px; overflow-x: auto;
     }
     .nav-tab {
-      padding: 11px 14px;
-      border: none;
-      background: none;
-      color: var(--text-muted);
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -1px;
-      white-space: nowrap;
+      padding: 11px 14px; border: none; background: none; color: var(--text-muted);
+      font-size: 14px; font-weight: 500; cursor: pointer;
+      border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap;
     }
     .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
     /* Content */
-    .content { padding: 16px; max-width: 680px; margin: 0 auto; }
+    .content { padding: 16px; max-width: 720px; margin: 0 auto; }
 
     /* Cards */
     .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      margin-bottom: 12px;
-      overflow: hidden;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; margin-bottom: 12px; overflow: hidden;
     }
     .card-header {
-      padding: 13px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      user-select: none;
+      padding: 13px 16px; display: flex; align-items: center;
+      justify-content: space-between; cursor: pointer; user-select: none;
     }
     .card-header:hover { background: #f5f2ee; }
-    .card-body {
-      padding: 0 16px 14px;
-      border-top: 1px solid var(--border);
-    }
+    .card-body { padding: 0 16px 14px; border-top: 1px solid var(--border); }
     .card-body-pad { padding: 14px 16px; }
 
     .book-title { font-size: 15px; font-weight: 600; }
     .book-author { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-    .book-right { text-align: right; }
+    .book-right { text-align: right; flex-shrink: 0; }
     .book-progress { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
     .chevron { font-size: 11px; color: var(--text-muted); display: inline-block; transition: transform 0.2s; }
     .chevron.open { transform: rotate(180deg); }
-
-    /* Progress bar */
-    .progress-bar {
-      height: 4px;
-      background: var(--border);
-      border-radius: 2px;
-      overflow: hidden;
-      margin-top: 4px;
-      width: 80px;
-    }
+    .progress-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 4px; width: 80px; }
     .progress-fill { height: 100%; background: var(--green); border-radius: 2px; transition: width 0.3s; }
 
     /* Chapter rows */
     .chapter-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 9px 0;
-      border-bottom: 1px solid var(--border);
-      cursor: pointer;
-      border-radius: 4px;
-      transition: background 0.1s;
+      display: flex; align-items: center; gap: 10px; padding: 9px 0;
+      border-bottom: 1px solid var(--border); cursor: pointer;
+      border-radius: 4px; transition: background 0.1s;
     }
     .chapter-item:last-child { border-bottom: none; }
     .chapter-item:hover { background: #f5f2ee; margin: 0 -8px; padding: 9px 8px; }
@@ -143,58 +134,31 @@
     .ch-name { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .ch-date { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
     .ch-dots { display: flex; gap: 4px; align-items: center; }
-    .dot {
-      width: 9px; height: 9px; border-radius: 50%;
-      background: var(--border); flex-shrink: 0;
-    }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
     .dot.written { background: var(--yellow); }
     .dot.posted { background: var(--green); }
 
-    /* Status buttons */
+    /* Status/content blocks */
     .status-section { margin: 10px 0 0; }
     .status-section-title {
-      font-size: 11px; font-weight: 700;
-      color: var(--text-muted); text-transform: uppercase;
-      letter-spacing: 0.5px; margin-bottom: 8px;
+      font-size: 11px; font-weight: 700; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;
     }
-    .content-block {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 10px;
-      overflow: hidden;
-    }
+    .content-block { border: 1px solid var(--border); border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
     .content-block-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 9px 12px;
-      background: var(--bg);
-      cursor: pointer;
-      user-select: none;
-      gap: 10px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 9px 12px; background: var(--bg); cursor: pointer; user-select: none; gap: 10px;
     }
     .content-block-header:hover { background: #ede9e3; }
     .content-block-label { font-size: 13px; font-weight: 600; }
     .content-block-body { padding: 10px 12px; border-top: 1px solid var(--border); }
-    .status-row {
-      display: flex;
-      align-items: center;
-      padding: 0 0 9px;
-      gap: 8px;
-    }
+    .status-row { display: flex; align-items: center; padding: 0 0 9px; gap: 8px; }
     .status-label { font-size: 12px; font-weight: 600; color: var(--text-muted); min-width: 50px; }
     .status-btns { display: flex; gap: 5px; flex-wrap: wrap; }
     .sbtn {
-      padding: 4px 10px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text-muted);
-      font-size: 12px;
-      cursor: pointer;
-      font-family: inherit;
-      font-weight: 500;
-      transition: all 0.1s;
+      padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border);
+      background: var(--bg); color: var(--text-muted); font-size: 12px;
+      cursor: pointer; font-family: inherit; font-weight: 500; transition: all 0.1s;
     }
     .sbtn:hover { border-color: var(--text-muted); }
     .sbtn.active-not_started { background: #ede9e3; color: var(--text); border-color: #c8bfb4; }
@@ -204,35 +168,21 @@
     /* Forms */
     .form-group { margin-bottom: 13px; }
     .form-label {
-      display: block;
-      font-size: 11px; font-weight: 700;
-      color: var(--text-muted); text-transform: uppercase;
-      letter-spacing: 0.5px; margin-bottom: 5px;
+      display: block; font-size: 11px; font-weight: 700; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;
     }
     .form-input {
-      width: 100%;
-      padding: 8px 11px;
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      font-size: 14px;
-      background: var(--bg);
-      color: var(--text);
-      font-family: inherit;
-      transition: border-color 0.15s;
+      width: 100%; padding: 8px 11px; border: 1px solid var(--border);
+      border-radius: 7px; font-size: 14px; background: var(--bg); color: var(--text);
+      font-family: inherit; transition: border-color 0.15s;
     }
     .form-input:focus { outline: none; border-color: var(--accent); background: var(--surface); }
     textarea.form-input { resize: vertical; min-height: 72px; }
 
     /* Buttons */
     .btn {
-      padding: 8px 18px;
-      border-radius: 7px;
-      border: none;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: inherit;
-      transition: opacity 0.15s;
+      padding: 8px 18px; border-radius: 7px; border: none; font-size: 14px;
+      font-weight: 500; cursor: pointer; font-family: inherit; transition: opacity 0.15s;
     }
     .btn:active { opacity: 0.8; }
     .btn-primary { background: var(--accent); color: white; }
@@ -247,23 +197,13 @@
 
     /* Modal */
     .overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.38);
-      z-index: 200;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.38);
+      z-index: 200; display: flex; align-items: flex-end; justify-content: center;
     }
-    @media (min-width: 560px) {
-      .overlay { align-items: center; padding: 20px; }
-    }
+    @media (min-width: 560px) { .overlay { align-items: center; padding: 20px; } }
     .modal {
-      background: var(--surface);
-      border-radius: 14px 14px 0 0;
-      width: 100%;
-      max-width: 520px;
-      max-height: 92vh;
-      overflow-y: auto;
+      background: var(--surface); border-radius: 14px 14px 0 0;
+      width: 100%; max-width: 520px; max-height: 92vh; overflow-y: auto;
       padding: 20px 20px 28px;
     }
     @media (min-width: 560px) { .modal { border-radius: 12px; } }
@@ -271,56 +211,82 @@
 
     /* Setup */
     .setup-wrap { padding: 24px 16px; max-width: 460px; margin: 0 auto; }
-    .setup-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px;
-      margin-top: 32px;
-    }
+    .setup-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-top: 32px; }
     .setup-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
     .setup-card .sub { font-size: 13px; color: var(--text-muted); margin-bottom: 22px; line-height: 1.55; }
     .hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
 
     /* Dashboard */
     .section-label {
-      font-size: 11px; font-weight: 700;
-      color: var(--text-muted); text-transform: uppercase;
-      letter-spacing: 0.5px; margin-bottom: 8px;
+      font-size: 11px; font-weight: 700; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;
     }
     .section-gap { margin-top: 20px; }
-
     .upcoming-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px 14px;
-      margin-bottom: 8px;
-      cursor: pointer;
-      transition: border-color 0.15s;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+      padding: 12px 14px; margin-bottom: 8px; cursor: pointer; transition: border-color 0.15s;
     }
     .upcoming-card:hover { border-color: var(--accent); }
     .uc-book { font-size: 11px; color: var(--text-muted); margin-bottom: 2px; }
     .uc-title { font-size: 14px; font-weight: 600; }
     .uc-date { font-size: 12px; color: var(--accent); margin-top: 3px; font-weight: 500; }
     .uc-chips { display: flex; gap: 5px; margin-top: 8px; flex-wrap: wrap; }
-    .chip {
-      font-size: 11px; padding: 2px 9px;
-      border-radius: 20px; border: 1px solid;
-    }
+    .chip { font-size: 11px; padding: 2px 9px; border-radius: 20px; border: 1px solid; }
     .chip.not_started { background: #ede9e3; color: var(--text-muted); border-color: #d4ccc2; }
     .chip.written { background: var(--yellow-light); color: var(--yellow); border-color: var(--yellow); }
     .chip.posted { background: var(--green-light); color: var(--green); border-color: var(--green); }
 
-    .empty-state {
-      text-align: center; padding: 48px 20px; color: var(--text-muted);
+    /* Calendar */
+    .cal-header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;
     }
+    .cal-month-title { font-size: 17px; font-weight: 700; }
+    .cal-nav {
+      background: none; border: 1px solid var(--border); border-radius: 6px;
+      padding: 5px 13px; cursor: pointer; font-size: 15px; color: var(--text-muted);
+    }
+    .cal-nav:hover { background: var(--border); }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+    .cal-day-label {
+      font-size: 10px; font-weight: 700; color: var(--text-muted); text-align: center;
+      padding: 4px 0; text-transform: uppercase;
+    }
+    .cal-cell {
+      min-height: 58px; border: 1px solid var(--border); border-radius: 5px;
+      padding: 4px 5px; background: var(--surface); vertical-align: top;
+    }
+    .cal-cell.other-month { background: var(--bg); }
+    .cal-cell.other-month .cal-date { opacity: 0.35; }
+    .cal-cell.today { border-color: var(--accent); border-width: 2px; }
+    .cal-date { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 3px; }
+    .cal-cell.today .cal-date { color: var(--accent); }
+    .cal-event {
+      font-size: 10px; padding: 2px 4px; border-radius: 3px; margin-bottom: 2px;
+      cursor: pointer; line-height: 1.3; white-space: nowrap; overflow: hidden;
+      text-overflow: ellipsis; display: block;
+    }
+    .cal-event:hover { opacity: 0.75; }
+
+    /* Book index */
+    .index-text {
+      font-family: 'Courier New', Courier, monospace; font-size: 12px;
+      background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+      padding: 14px; white-space: pre-wrap; max-height: 380px; overflow-y: auto;
+      line-height: 1.6; color: var(--text);
+    }
+    .copy-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+    .copy-msg { font-size: 12px; color: var(--green); }
+
+    /* Misc */
+    .empty-state { text-align: center; padding: 48px 20px; color: var(--text-muted); }
     .empty-state .icon { font-size: 36px; margin-bottom: 10px; }
     .empty-state p { font-size: 14px; line-height: 1.5; }
-
-    .url-link { font-size: 12px; color: var(--accent); word-break: break-all; }
-
     .hidden { display: none !important; }
+
+    /* Legend */
+    .cal-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-muted); }
+    .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
   </style>
 </head>
 <body>
@@ -332,21 +298,33 @@
 // STATE
 // ============================================================
 let state = { books: [] };
-/*
-  book: { id, title, author, chapters[] }
-  chapter: { id, number, title, publishDate, substackUrl,
-             teaser, chapter, dropNote,   // 'not_started'|'written'|'posted'
-             notes }
-*/
 
 let gh = { token: '', owner: '', repo: '', sha: null };
+
+const now = new Date();
 let ui = {
   tab: 'dashboard',
   expanded: new Set(),
-  modal: null,   // { type, data }
+  modal: null,
   syncMsg: '',
   dirty: false,
+  alertsDismissed: false,
+  calYear:  now.getFullYear(),
+  calMonth: now.getMonth(), // 0-indexed
 };
+
+// ============================================================
+// BOOK COLORS  (one per book, wraps if >7)
+// ============================================================
+const BOOK_COLORS       = ['#7a4f2e','#3d6e4f','#5a3d7a','#7a6a2e','#2e5a7a','#7a2e4f','#2e7a6a'];
+const BOOK_COLORS_LIGHT = ['#f0e6dc','#e8f2ec','#ede0f5','#f2f0dc','#dce8f2','#f2dce8','#dcf2ee'];
+
+function bookColorIdx(bookId) {
+  const idx = state.books.findIndex(b => b.id === bookId);
+  return idx < 0 ? 0 : idx % BOOK_COLORS.length;
+}
+function bookColor(bookId)      { return BOOK_COLORS[bookColorIdx(bookId)]; }
+function bookColorLight(bookId) { return BOOK_COLORS_LIGHT[bookColorIdx(bookId)]; }
 
 // ============================================================
 // GITHUB API
@@ -369,20 +347,14 @@ async function loadData() {
   try {
     const res = await ghReq('/repos/' + gh.owner + '/' + gh.repo + '/contents/data.json');
     if (res.status === 404) {
-      gh.sha = null;
-      setSync('Ready (empty)');
+      gh.sha = null; setSync('Ready (empty)');
     } else if (res.ok) {
       const j = await res.json();
       gh.sha = j.sha;
-      const raw = atob(j.content.replace(/\n/g, ''));
-      state = JSON.parse(raw);
+      state = JSON.parse(atob(j.content.replace(/\n/g, '')));
       setSync('Loaded ✓');
-    } else {
-      setSync('Load error ' + res.status);
-    }
-  } catch(e) {
-    setSync('Error: ' + e.message);
-  }
+    } else { setSync('Load error ' + res.status); }
+  } catch(e) { setSync('Error: ' + e.message); }
   render();
 }
 
@@ -405,9 +377,7 @@ async function saveData() {
       const e = await res.json();
       setSync('Save error: ' + (e.message || res.status));
     }
-  } catch(e) {
-    setSync('Error: ' + e.message);
-  }
+  } catch(e) { setSync('Error: ' + e.message); }
   render();
 }
 
@@ -429,15 +399,23 @@ function esc(s) {
 
 function fmtDate(d) {
   if (!d) return '';
-  const dt = new Date(d + 'T12:00:00');
-  return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  return new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function fmtDateShort(d) {
+  if (!d) return '';
+  return new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
 function daysUntil(d) {
   if (!d) return null;
   const today = new Date(); today.setHours(0,0,0,0);
-  const t = new Date(d + 'T12:00:00');
-  return Math.ceil((t - today) / 86400000);
+  return Math.ceil((new Date(d + 'T12:00:00') - today) / 86400000);
+}
+
+function todayStr() {
+  const t = new Date();
+  return t.getFullYear() + '-' + String(t.getMonth()+1).padStart(2,'0') + '-' + String(t.getDate()).padStart(2,'0');
 }
 
 function loadGhSettings() {
@@ -450,7 +428,7 @@ function saveGhSettings(token, owner, repo) {
   gh.token = token; gh.owner = owner; gh.repo = repo;
   localStorage.setItem('ct_token', token);
   localStorage.setItem('ct_owner', owner);
-  localStorage.setItem('ct_repo',  repo);
+  localStorage.setItem('ct_repo', repo);
 }
 
 function isReady() { return gh.token && gh.owner && gh.repo; }
@@ -460,13 +438,13 @@ function markDirty() {
   ui.dirty = true;
   setSync('Unsaved...');
   if (autoSaveTimer) clearTimeout(autoSaveTimer);
-  autoSaveTimer = setTimeout(() => { saveData(); }, 2500);
+  autoSaveTimer = setTimeout(() => saveData(), 2500);
 }
 
 const STATUS_LABELS = { not_started: 'Not Started', written: 'Written', posted: 'Posted' };
-const STATUSES = ['not_started', 'written', 'posted'];
-const FIELDS = ['teaser', 'chapter', 'dropNote'];
-const FIELD_LABELS = { teaser: 'Teaser Note', chapter: 'Chapter Post', dropNote: 'Drop Note' };
+const STATUSES      = ['not_started', 'written', 'posted'];
+const FIELDS        = ['teaser', 'chapter', 'dropNote'];
+const FIELD_LABELS  = { teaser: 'Teaser Note', chapter: 'Chapter Post', dropNote: 'Drop Note' };
 
 // ============================================================
 // RENDER
@@ -476,11 +454,14 @@ function render() {
 }
 
 function renderApp() {
-  return renderHeader() + renderNav() +
+  return renderHeader() +
+    renderAlerts() +
+    renderNav() +
     '<div class="content">' +
       (ui.tab === 'dashboard' ? renderDashboard() : '') +
-      (ui.tab === 'books'     ? renderBooks()     : '') +
-      (ui.tab === 'settings'  ? renderSettings()  : '') +
+      (ui.tab === 'calendar'  ? renderCalendar()  : '') +
+      (ui.tab === 'books'     ? renderBooks()      : '') +
+      (ui.tab === 'settings'  ? renderSettings()   : '') +
     '</div>' +
     (ui.modal ? renderModal() : '');
 }
@@ -495,8 +476,59 @@ function renderHeader() {
   </div>`;
 }
 
+// ============================================================
+// ALERTS (Feature 2: due-soon urgency)
+// ============================================================
+function renderAlerts() {
+  if (ui.alertsDismissed) return '';
+
+  const alerts = [];
+  for (const book of state.books) {
+    for (const ch of (book.chapters || [])) {
+      const days = daysUntil(ch.publishDate);
+      if (days === null || days > 7) continue;
+      const missing = FIELDS.filter(f => ch[f] !== 'posted')
+        .map(f => FIELD_LABELS[f]);
+      if (!missing.length) continue;
+
+      let urgency = '';
+      if (days < 0)      urgency = Math.abs(days) + 'd overdue';
+      else if (days === 0) urgency = 'Publishes TODAY';
+      else if (days === 1) urgency = 'Publishes TOMORROW';
+      else                 urgency = 'Publishes in ' + days + ' days';
+
+      alerts.push({ book, ch, urgency, missing });
+    }
+  }
+
+  if (!alerts.length) return '';
+  alerts.sort((a,b) => daysUntil(a.ch.publishDate) - daysUntil(b.ch.publishDate));
+
+  return `<div class="alert-banner">
+    <div class="alert-banner-top">
+      <span class="alert-banner-title">⚠ Needs attention</span>
+      <button class="alert-dismiss" onclick="ui.alertsDismissed=true;render()">Dismiss</button>
+    </div>
+    ${alerts.map(({book, ch, urgency, missing}) => `
+      <div class="alert-item" onclick="openChapter('${book.id}','${ch.id}')" style="cursor:pointer">
+        <div class="alert-item-left">
+          <div class="alert-item-book">${esc(book.title)}</div>
+          <div class="alert-item-ch">Ch. ${ch.number}${ch.title ? ': ' + esc(ch.title) : ''}</div>
+          <div class="alert-item-date">${esc(urgency)}</div>
+          <div class="alert-item-missing">Still needed: ${missing.map(esc).join(', ')}</div>
+        </div>
+        <span style="color:var(--text-muted);font-size:16px">›</span>
+      </div>`).join('')}
+  </div>`;
+}
+
 function renderNav() {
-  const tabs = [['dashboard','Dashboard'],['books','Books'],['settings','Settings']];
+  const tabs = [
+    ['dashboard','Dashboard'],
+    ['calendar','Calendar'],
+    ['books','Books'],
+    ['settings','Settings'],
+  ];
   return '<div class="nav-tabs">' +
     tabs.map(([id,label]) =>
       `<button class="nav-tab${ui.tab===id?' active':''}" onclick="setTab('${id}')">${label}</button>`
@@ -504,21 +536,19 @@ function renderNav() {
   '</div>';
 }
 
-// --- DASHBOARD ---
+// ============================================================
+// DASHBOARD
+// ============================================================
 function renderDashboard() {
   const upcoming = [], inProgress = [];
 
   for (const book of state.books) {
     for (const ch of (book.chapters || [])) {
-      const allDone = FIELDS.every(f => ch[f] === 'posted');
+      const allDone    = FIELDS.every(f => ch[f] === 'posted');
       const anyStarted = FIELDS.some(f => ch[f] !== 'not_started');
-      const days = daysUntil(ch.publishDate);
-
-      if (days !== null && days <= 30 && !allDone) {
-        upcoming.push({ book, ch, days });
-      } else if (anyStarted && !allDone) {
-        inProgress.push({ book, ch });
-      }
+      const days       = daysUntil(ch.publishDate);
+      if (days !== null && days <= 30 && !allDone) upcoming.push({ book, ch, days });
+      else if (anyStarted && !allDone)             inProgress.push({ book, ch });
     }
   }
   upcoming.sort((a,b) => a.days - b.days);
@@ -531,26 +561,23 @@ function renderDashboard() {
   }
 
   let html = '';
-
   if (upcoming.length) {
     html += '<div class="section-label">Upcoming — next 30 days</div>';
     html += upcoming.map(({book, ch, days}) => upcomingCard(book, ch, days)).join('');
   }
-
   if (inProgress.length) {
-    html += `<div class="section-label${upcoming.length ? ' section-gap' : ''}">In Progress</div>`;
+    html += `<div class="section-label${upcoming.length?' section-gap':''}">In Progress</div>`;
     html += inProgress.map(({book, ch}) => upcomingCard(book, ch, null)).join('');
   }
-
   return html;
 }
 
 function upcomingCard(book, ch, days) {
   let dateStr = '';
   if (days !== null) {
-    if (days === 0) dateStr = 'Today';
-    else if (days < 0) dateStr = Math.abs(days) + 'd ago';
-    else dateStr = 'In ' + days + ' day' + (days===1?'':'s');
+    if (days === 0)      dateStr = 'Today';
+    else if (days < 0)   dateStr = Math.abs(days) + 'd ago';
+    else                 dateStr = 'In ' + days + ' day' + (days===1?'':'s');
     if (ch.publishDate) dateStr += ' · ' + fmtDate(ch.publishDate);
   } else if (ch.publishDate) {
     dateStr = fmtDate(ch.publishDate);
@@ -568,11 +595,123 @@ function upcomingCard(book, ch, days) {
   </div>`;
 }
 
-// --- BOOKS ---
+// ============================================================
+// CALENDAR (Feature 1)
+// ============================================================
+function renderCalendar() {
+  const year  = ui.calYear;
+  const month = ui.calMonth;
+
+  const monthNames = ['January','February','March','April','May','June',
+                      'July','August','September','October','November','December'];
+  const dayNames   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+  // Build map: 'YYYY-MM-DD' -> [{ book, ch }]
+  const eventMap = {};
+  for (const book of state.books) {
+    for (const ch of (book.chapters || [])) {
+      if (!ch.publishDate) continue;
+      if (!eventMap[ch.publishDate]) eventMap[ch.publishDate] = [];
+      eventMap[ch.publishDate].push({ book, ch });
+    }
+  }
+
+  // First day of month, last day
+  const firstDay  = new Date(year, month, 1);
+  const lastDay   = new Date(year, month + 1, 0);
+  const startCell = firstDay.getDay(); // 0=Sun
+  const today     = todayStr();
+
+  // Build cells
+  let cells = '';
+
+  // Day headers
+  cells += dayNames.map(d => `<div class="cal-day-label">${d}</div>`).join('');
+
+  // Empty cells before first
+  for (let i = 0; i < startCell; i++) {
+    const d = new Date(year, month, 1 - (startCell - i));
+    cells += calCell(d, year, month, eventMap, today, true);
+  }
+
+  // Days in month
+  for (let d = 1; d <= lastDay.getDate(); d++) {
+    const date = new Date(year, month, d);
+    cells += calCell(date, year, month, eventMap, today, false);
+  }
+
+  // Fill remaining row
+  const total = startCell + lastDay.getDate();
+  const remainder = total % 7 === 0 ? 0 : 7 - (total % 7);
+  for (let i = 1; i <= remainder; i++) {
+    const date = new Date(year, month + 1, i);
+    cells += calCell(date, year, month, eventMap, today, true);
+  }
+
+  // Legend
+  const legend = state.books.map((book, i) => {
+    const color = BOOK_COLORS[i % BOOK_COLORS.length];
+    return `<div class="legend-item">
+      <div class="legend-dot" style="background:${color}"></div>
+      <span>${esc(book.title)}</span>
+    </div>`;
+  }).join('');
+
+  return `
+    <div class="cal-header">
+      <button class="cal-nav" onclick="prevMonth()">‹</button>
+      <div class="cal-month-title">${monthNames[month]} ${year}</div>
+      <button class="cal-nav" onclick="nextMonth()">›</button>
+    </div>
+    <div class="cal-grid">${cells}</div>
+    ${state.books.length ? `<div class="cal-legend" style="margin-top:14px">${legend}</div>` : ''}
+  `;
+}
+
+function calCell(date, year, month, eventMap, today, otherMonth) {
+  const dateStr = date.getFullYear() + '-' +
+    String(date.getMonth()+1).padStart(2,'0') + '-' +
+    String(date.getDate()).padStart(2,'0');
+  const isToday = dateStr === today;
+  const events  = eventMap[dateStr] || [];
+
+  const eventsHtml = events.map(({book, ch}) => {
+    const color      = bookColor(book.id);
+    const colorLight = bookColorLight(book.id);
+    const allDone    = FIELDS.every(f => ch[f] === 'posted');
+    const label      = 'Ch.' + ch.number + (ch.title ? ' ' + ch.title : '');
+    const opacity    = allDone ? '0.55' : '1';
+    return `<span class="cal-event"
+      style="background:${colorLight};color:${color};border:1px solid ${color}40;opacity:${opacity}"
+      onclick="openChapter('${book.id}','${ch.id}')"
+      title="${esc(book.title + ' — ' + label)}"
+    >${esc(label)}</span>`;
+  }).join('');
+
+  return `<div class="cal-cell${otherMonth?' other-month':''}${isToday?' today':''}">
+    <div class="cal-date">${date.getDate()}</div>
+    ${eventsHtml}
+  </div>`;
+}
+
+function prevMonth() {
+  if (ui.calMonth === 0) { ui.calMonth = 11; ui.calYear--; }
+  else ui.calMonth--;
+  render();
+}
+function nextMonth() {
+  if (ui.calMonth === 11) { ui.calMonth = 0; ui.calYear++; }
+  else ui.calMonth++;
+  render();
+}
+
+// ============================================================
+// BOOKS
+// ============================================================
 function renderBooks() {
   let html = `<button class="btn btn-primary" style="margin-bottom:14px" onclick="openModal('add-book',{})">+ Add Book</button>`;
   if (!state.books.length) {
-    html += `<div class="empty-state"><div class="icon">📖</div><p>No books yet. Add one to get started.</p></div>`;
+    html += `<div class="empty-state"><div class="icon">📖</div><p>No books yet.</p></div>`;
     return html;
   }
   html += state.books.map(renderBookCard).join('');
@@ -580,13 +719,14 @@ function renderBooks() {
 }
 
 function renderBookCard(book) {
-  const chs = book.chapters || [];
+  const chs   = book.chapters || [];
   const total = chs.length;
   const done  = chs.filter(c => FIELDS.every(f => c[f] === 'posted')).length;
   const pct   = total ? Math.round(done / total * 100) : 0;
   const open  = ui.expanded.has(book.id);
+  const color = bookColor(book.id);
 
-  return `<div class="card">
+  return `<div class="card" style="border-left:3px solid ${color}">
     <div class="card-header" onclick="toggleBook('${book.id}')">
       <div>
         <div class="book-title">${esc(book.title)}</div>
@@ -594,7 +734,7 @@ function renderBookCard(book) {
       </div>
       <div class="book-right">
         <div class="book-progress">${done}/${total} chapters</div>
-        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${color}"></div></div>
         <div style="margin-top:6px"><span class="chevron${open?' open':''}">▼</span></div>
       </div>
     </div>
@@ -603,6 +743,7 @@ function renderBookCard(book) {
       ${chs.map(ch => renderChapterRow(book, ch)).join('')}
       <div class="btn-row" style="padding-top:6px">
         <button class="btn btn-ghost btn-sm" onclick="openModal('add-chapter',{bookId:'${book.id}'})">+ Chapter</button>
+        <button class="btn btn-ghost btn-sm" onclick="openModal('book-index',{bookId:'${book.id}'})">View Index</button>
         <button class="btn btn-ghost btn-sm" onclick="openModal('edit-book',{bookId:'${book.id}'})">Edit Book</button>
       </div>
     </div>` : ''}
@@ -617,14 +758,16 @@ function renderChapterRow(book, ch) {
       ${ch.publishDate ? `<div class="ch-date">${fmtDate(ch.publishDate)}</div>` : ''}
     </div>
     <div class="ch-dots" title="Teaser / Post / Drop Note">
-      <div class="dot ${ch.teaser}" title="Teaser"></div>
-      <div class="dot ${ch.chapter}" title="Chapter Post"></div>
-      <div class="dot ${ch.dropNote}" title="Drop Note"></div>
+      <div class="dot ${ch.teaser}"></div>
+      <div class="dot ${ch.chapter}"></div>
+      <div class="dot ${ch.dropNote}"></div>
     </div>
   </div>`;
 }
 
-// --- SETTINGS ---
+// ============================================================
+// SETTINGS
+// ============================================================
 function renderSettings() {
   return `<div class="card">
     <div class="card-header" style="cursor:default"><div class="book-title">GitHub Sync</div></div>
@@ -650,7 +793,9 @@ function renderSettings() {
   </div>`;
 }
 
-// --- SETUP SCREEN ---
+// ============================================================
+// SETUP
+// ============================================================
 function renderSetup() {
   return `<div class="setup-wrap">
     <div class="setup-card">
@@ -672,15 +817,18 @@ function renderSetup() {
           Select <strong>repo</strong> scope. Token is stored only in this browser.
         </div>
       </div>
-      <button class="btn btn-primary" style="width:100%;margin-top:4px" onclick="submitSetup()">Connect & Load</button>
+      <button class="btn btn-primary" style="width:100%;margin-top:4px" onclick="submitSetup()">Connect &amp; Load</button>
     </div>
   </div>`;
 }
 
-// --- MODALS ---
+// ============================================================
+// MODALS
+// ============================================================
 function renderModal() {
   const { type, data } = ui.modal;
 
+  // --- Add / Edit Book ---
   if (type === 'add-book' || type === 'edit-book') {
     const book = type === 'edit-book' ? state.books.find(b => b.id === data.bookId) : null;
     return `<div class="overlay" onclick="overlayClose(event)"><div class="modal">
@@ -701,13 +849,13 @@ function renderModal() {
     </div></div>`;
   }
 
+  // --- Add Chapter ---
   if (type === 'add-chapter') {
-    const nextNum = getNextNum(data.bookId);
     return `<div class="overlay" onclick="overlayClose(event)"><div class="modal">
       <div class="modal-title">Add Chapter</div>
       <div class="form-group">
         <label class="form-label">Chapter Number</label>
-        <input class="form-input" id="m-num" type="number" value="${nextNum}" min="1">
+        <input class="form-input" id="m-num" type="number" value="${getNextNum(data.bookId)}" min="1">
       </div>
       <div class="form-group">
         <label class="form-label">Chapter Title <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
@@ -724,18 +872,18 @@ function renderModal() {
     </div></div>`;
   }
 
+  // --- Edit Chapter ---
   if (type === 'edit-chapter') {
     const book = state.books.find(b => b.id === data.bookId);
     const ch   = book?.chapters?.find(c => c.id === data.chapterId);
     if (!ch) return '';
 
     const contentBlocks = FIELDS.map(field => {
-      const contentId = `m-content-${field}`;
-      const bodyId    = `cb-body-${field}`;
+      const bodyId     = `cb-body-${field}`;
+      const contentKey = field + 'Content';
       const statusBtns = STATUSES.map(s =>
         `<button class="sbtn${ch[field]===s?' active-'+s:''}" onclick="setStatus('${data.bookId}','${data.chapterId}','${field}','${s}')">${STATUS_LABELS[s]}</button>`
       ).join('');
-      const contentKey = field + 'Content';
       return `<div class="content-block">
         <div class="content-block-header" onclick="toggleBlock('${bodyId}')">
           <span class="content-block-label">${FIELD_LABELS[field]}</span>
@@ -751,7 +899,7 @@ function renderModal() {
           </div>
           <div class="form-group" style="margin-bottom:0">
             <label class="form-label">Draft / Content <span style="font-weight:400;text-transform:none;letter-spacing:0">— paste links, text, anything to copy into Substack</span></label>
-            <textarea class="form-input" id="${contentId}" style="min-height:90px" placeholder="Paste links, draft text, notes to copy into Substack...">${esc(ch[contentKey]||'')}</textarea>
+            <textarea class="form-input" id="m-content-${field}" style="min-height:90px" placeholder="Paste links, draft text, notes to copy into Substack...">${esc(ch[contentKey]||'')}</textarea>
           </div>
         </div>
       </div>`;
@@ -791,7 +939,91 @@ function renderModal() {
     </div></div>`;
   }
 
+  // --- Book Index (Feature 4) ---
+  if (type === 'book-index') {
+    const book = state.books.find(b => b.id === data.bookId);
+    if (!book) return '';
+    const chs  = (book.chapters || []).slice().sort((a,b) => a.number - b.number);
+
+    const indexText = buildIndexText(book, chs);
+
+    const rows = chs.map(ch => {
+      const allDone = FIELDS.every(f => ch[f] === 'posted');
+      return `<div class="chapter-item" onclick="openChapter('${book.id}','${ch.id}')">
+        <div class="ch-num">Ch.${ch.number}</div>
+        <div class="ch-info">
+          <div class="ch-name">${esc(ch.title || '(Untitled)')}</div>
+          ${ch.publishDate ? `<div class="ch-date">${fmtDate(ch.publishDate)}</div>` : ''}
+          ${ch.substackUrl ? `<div style="font-size:11px;color:var(--accent);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(ch.substackUrl)}</div>` : ''}
+        </div>
+        <div class="ch-dots">
+          <div class="dot ${ch.teaser}"></div>
+          <div class="dot ${ch.chapter}"></div>
+          <div class="dot ${ch.dropNote}"></div>
+        </div>
+      </div>`;
+    }).join('');
+
+    return `<div class="overlay" onclick="overlayClose(event)"><div class="modal">
+      <div class="modal-title">${esc(book.title)}</div>
+      ${book.author ? `<div style="color:var(--text-muted);font-size:13px;margin-top:-10px;margin-bottom:14px">by ${esc(book.author)}</div>` : ''}
+
+      ${chs.length ? `
+        <div style="max-height:260px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:0 12px;margin-bottom:14px">
+          ${rows}
+        </div>
+      ` : `<p style="color:var(--text-muted);margin-bottom:14px">No chapters yet.</p>`}
+
+      ${chs.length ? `
+        <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Copyable Index Text</div>
+        <div class="index-text" id="index-text-box">${esc(indexText)}</div>
+        <div class="copy-row">
+          <button class="btn btn-primary btn-sm" onclick="copyIndex()">Copy to Clipboard</button>
+          <span class="copy-msg hidden" id="copy-msg">Copied!</span>
+        </div>
+      ` : ''}
+
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+      </div>
+    </div></div>`;
+  }
+
   return '';
+}
+
+function buildIndexText(book, chs) {
+  let text = book.title.toUpperCase() + '\n';
+  if (book.author) text += 'by ' + book.author + '\n';
+  text += '\n';
+  for (const ch of chs) {
+    const title = ch.title ? `Chapter ${ch.number}: ${ch.title}` : `Chapter ${ch.number}`;
+    text += title + '\n';
+    if (ch.substackUrl) text += ch.substackUrl + '\n';
+    else if (ch.publishDate) text += '(Coming ' + fmtDateShort(ch.publishDate) + ')\n';
+    else text += '(Coming soon)\n';
+    text += '\n';
+  }
+  return text.trimEnd();
+}
+
+async function copyIndex() {
+  const el = document.getElementById('index-text-box');
+  if (!el) return;
+  try {
+    await navigator.clipboard.writeText(el.textContent);
+    const msg = document.getElementById('copy-msg');
+    if (msg) {
+      msg.classList.remove('hidden');
+      setTimeout(() => msg.classList.add('hidden'), 2000);
+    }
+  } catch(e) {
+    // Fallback: select the text
+    const range = document.createRange();
+    range.selectNode(el);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+  }
 }
 
 // ============================================================
@@ -814,7 +1046,7 @@ function toggleBlock(bodyId) {
   const chv = document.getElementById('chv-' + bodyId);
   if (!el) return;
   const open = el.style.display !== 'none';
-  el.style.display  = open ? 'none' : 'block';
+  el.style.display = open ? 'none' : 'block';
   if (chv) chv.classList.toggle('open', !open);
 }
 
@@ -852,17 +1084,17 @@ function doAddChapter(bookId) {
   if (!book) return;
   book.chapters.push({
     id: uid(),
-    number:         parseInt(document.getElementById('m-num').value) || 1,
-    title:          document.getElementById('m-title').value.trim(),
-    publishDate:    document.getElementById('m-date').value,
-    substackUrl:    '',
-    teaser:         'not_started',
-    chapter:        'not_started',
-    dropNote:       'not_started',
-    teaserContent:  '',
-    chapterContent: '',
-    dropNoteContent:'',
-    notes:          '',
+    number:          parseInt(document.getElementById('m-num').value) || 1,
+    title:           document.getElementById('m-title').value.trim(),
+    publishDate:     document.getElementById('m-date').value,
+    substackUrl:     '',
+    teaser:          'not_started',
+    chapter:         'not_started',
+    dropNote:        'not_started',
+    teaserContent:   '',
+    chapterContent:  '',
+    dropNoteContent: '',
+    notes:           '',
   });
   book.chapters.sort((a,b) => a.number - b.number);
   markDirty(); closeModal();
@@ -872,12 +1104,11 @@ function doSaveChapter(bookId, chapterId) {
   const book = state.books.find(b => b.id === bookId);
   const ch   = book?.chapters?.find(c => c.id === chapterId);
   if (!ch) return;
-  ch.number          = parseInt(document.getElementById('m-num').value) || ch.number;
-  ch.title           = document.getElementById('m-title').value.trim();
-  ch.publishDate     = document.getElementById('m-date').value;
-  ch.substackUrl     = document.getElementById('m-url').value.trim();
-  ch.notes           = document.getElementById('m-notes').value;
-  // content drafts
+  ch.number      = parseInt(document.getElementById('m-num').value) || ch.number;
+  ch.title       = document.getElementById('m-title').value.trim();
+  ch.publishDate = document.getElementById('m-date').value;
+  ch.substackUrl = document.getElementById('m-url').value.trim();
+  ch.notes       = document.getElementById('m-notes').value;
   const tc = document.getElementById('m-content-teaser');
   const cc = document.getElementById('m-content-chapter');
   const dc = document.getElementById('m-content-dropNote');
@@ -901,8 +1132,7 @@ function setStatus(bookId, chapterId, field, value) {
   const ch   = book?.chapters?.find(c => c.id === chapterId);
   if (!ch) return;
   ch[field] = value;
-  markDirty();
-  render(); // re-render so button highlights update immediately
+  markDirty(); render();
 }
 
 function submitSetup() {
