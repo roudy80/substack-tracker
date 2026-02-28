@@ -455,7 +455,13 @@ function saveGhSettings(token, owner, repo) {
 
 function isReady() { return gh.token && gh.owner && gh.repo; }
 
-function markDirty() { ui.dirty = true; }
+let autoSaveTimer = null;
+function markDirty() {
+  ui.dirty = true;
+  setSync('Unsaved...');
+  if (autoSaveTimer) clearTimeout(autoSaveTimer);
+  autoSaveTimer = setTimeout(() => { saveData(); }, 2500);
+}
 
 const STATUS_LABELS = { not_started: 'Not Started', written: 'Written', posted: 'Posted' };
 const STATUSES = ['not_started', 'written', 'posted'];
