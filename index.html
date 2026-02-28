@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter Tracker</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #faf8f5;
+      --surface: #ffffff;
+      --border: #e8e0d4;
+      --text: #2c2416;
+      --text-muted: #7a6e5e;
+      --accent: #7a4f2e;
+      --accent-light: #f0e6dc;
+      --green: #3d6e4f;
+      --green-light: #e8f2ec;
+      --yellow: #9a720a;
+      --yellow-light: #fef8e0;
+      --red: #8b2e2e;
+      --red-light: #fdf0f0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      background: var(--accent);
+      color: white;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    }
+    .header h1 { font-size: 17px; font-weight: 600; letter-spacing: 0.3px; }
+    .header-right { display: flex; gap: 8px; align-items: center; }
+    .sync-status { font-size: 11px; opacity: 0.85; max-width: 120px; text-align: right; }
+    .btn-header {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .btn-header:hover { background: rgba(255,255,255,0.32); }
+    .btn-header:active { background: rgba(255,255,255,0.15); }
+
+    /* Nav */
+    .nav-tabs {
+      display: flex;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 12px;
+      overflow-x: auto;
+    }
+    .nav-tab {
+      padding: 11px 14px;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      white-space: nowrap;
+    }
+    .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* Content */
+    .content { padding: 16px; max-width: 680px; margin: 0 auto; }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .card-header {
+      padding: 13px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+    }
+    .card-header:hover { background: #f5f2ee; }
+    .card-body {
+      padding: 0 16px 14px;
+      border-top: 1px solid var(--border);
+    }
+    .card-body-pad { padding: 14px 16px; }
+
+    .book-title { font-size: 15px; font-weight: 600; }
+    .book-author { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .book-right { text-align: right; }
+    .book-progress { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+    .chevron { font-size: 11px; color: var(--text-muted); display: inline-block; transition: transform 0.2s; }
+    .chevron.open { transform: rotate(180deg); }
+
+    /* Progress bar */
+    .progress-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 4px;
+      width: 80px;
+    }
+    .progress-fill { height: 100%; background: var(--green); border-radius: 2px; transition: width 0.3s; }
+
+    /* Chapter rows */
+    .chapter-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.1s;
+    }
+    .chapter-item:last-child { border-bottom: none; }
+    .chapter-item:hover { background: #f5f2ee; margin: 0 -8px; padding: 9px 8px; }
+    .ch-num { font-size: 11px; font-weight: 700; color: var(--text-muted); min-width: 26px; }
+    .ch-info { flex: 1; min-width: 0; }
+    .ch-name { font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ch-date { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+    .ch-dots { display: flex; gap: 4px; align-items: center; }
+    .dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--border); flex-shrink: 0;
+    }
+    .dot.written { background: var(--yellow); }
+    .dot.posted { background: var(--green); }
+
+    /* Status buttons */
+    .status-section { margin: 10px 0 0; }
+    .status-section-title {
+      font-size: 11px; font-weight: 700;
+      color: var(--text-muted); text-transform: uppercase;
+      letter-spacing: 0.5px; margin-bottom: 8px;
+    }
+    .content-block {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .content-block-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 12px;
+      background: var(--bg);
+      cursor: pointer;
+      user-select: none;
+      gap: 10px;
+    }
+    .content-block-header:hover { background: #ede9e3; }
+    .content-block-label { font-size: 13px; font-weight: 600; }
+    .content-block-body { padding: 10px 12px; border-top: 1px solid var(--border); }
+    .status-row {
+      display: flex;
+      align-items: center;
+      padding: 0 0 9px;
+      gap: 8px;
+    }
+    .status-label { font-size: 12px; font-weight: 600; color: var(--text-muted); min-width: 50px; }
+    .status-btns { display: flex; gap: 5px; flex-wrap: wrap; }
+    .sbtn {
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text-muted);
+      font-size: 12px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+      transition: all 0.1s;
+    }
+    .sbtn:hover { border-color: var(--text-muted); }
+    .sbtn.active-not_started { background: #ede9e3; color: var(--text); border-color: #c8bfb4; }
+    .sbtn.active-written { background: var(--yellow-light); color: var(--yellow); border-color: var(--yellow); }
+    .sbtn.active-posted { background: var(--green-light); color: var(--green); border-color: var(--green); }
+
+    /* Forms */
+    .form-group { margin-bottom: 13px; }
+    .form-label {
+      display: block;
+      font-size: 11px; font-weight: 700;
+      color: var(--text-muted); text-transform: uppercase;
+      letter-spacing: 0.5px; margin-bottom: 5px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 8px 11px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-size: 14px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: inherit;
+      transition: border-color 0.15s;
+    }
+    .form-input:focus { outline: none; border-color: var(--accent); background: var(--surface); }
+    textarea.form-input { resize: vertical; min-height: 72px; }
+
+    /* Buttons */
+    .btn {
+      padding: 8px 18px;
+      border-radius: 7px;
+      border: none;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity 0.15s;
+    }
+    .btn:active { opacity: 0.8; }
+    .btn-primary { background: var(--accent); color: white; }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-ghost { background: none; border: 1px solid var(--border); color: var(--text-muted); }
+    .btn-ghost:hover { background: var(--bg); border-color: var(--text-muted); }
+    .btn-danger { background: var(--red-light); color: var(--red); border: 1px solid #e8b4b4; }
+    .btn-danger:hover { background: #fae0e0; }
+    .btn-sm { padding: 5px 12px; font-size: 12px; }
+    .btn-row { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; align-items: center; }
+    .ml-auto { margin-left: auto; }
+
+    /* Modal */
+    .overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.38);
+      z-index: 200;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    @media (min-width: 560px) {
+      .overlay { align-items: center; padding: 20px; }
+    }
+    .modal {
+      background: var(--surface);
+      border-radius: 14px 14px 0 0;
+      width: 100%;
+      max-width: 520px;
+      max-height: 92vh;
+      overflow-y: auto;
+      padding: 20px 20px 28px;
+    }
+    @media (min-width: 560px) { .modal { border-radius: 12px; } }
+    .modal-title { font-size: 17px; font-weight: 700; margin-bottom: 16px; }
+
+    /* Setup */
+    .setup-wrap { padding: 24px 16px; max-width: 460px; margin: 0 auto; }
+    .setup-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 32px;
+    }
+    .setup-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+    .setup-card .sub { font-size: 13px; color: var(--text-muted); margin-bottom: 22px; line-height: 1.55; }
+    .hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
+
+    /* Dashboard */
+    .section-label {
+      font-size: 11px; font-weight: 700;
+      color: var(--text-muted); text-transform: uppercase;
+      letter-spacing: 0.5px; margin-bottom: 8px;
+    }
+    .section-gap { margin-top: 20px; }
+
+    .upcoming-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .upcoming-card:hover { border-color: var(--accent); }
+    .uc-book { font-size: 11px; color: var(--text-muted); margin-bottom: 2px; }
+    .uc-title { font-size: 14px; font-weight: 600; }
+    .uc-date { font-size: 12px; color: var(--accent); margin-top: 3px; font-weight: 500; }
+    .uc-chips { display: flex; gap: 5px; margin-top: 8px; flex-wrap: wrap; }
+    .chip {
+      font-size: 11px; padding: 2px 9px;
+      border-radius: 20px; border: 1px solid;
+    }
+    .chip.not_started { background: #ede9e3; color: var(--text-muted); border-color: #d4ccc2; }
+    .chip.written { background: var(--yellow-light); color: var(--yellow); border-color: var(--yellow); }
+    .chip.posted { background: var(--green-light); color: var(--green); border-color: var(--green); }
+
+    .empty-state {
+      text-align: center; padding: 48px 20px; color: var(--text-muted);
+    }
+    .empty-state .icon { font-size: 36px; margin-bottom: 10px; }
+    .empty-state p { font-size: 14px; line-height: 1.5; }
+
+    .url-link { font-size: 12px; color: var(--accent); word-break: break-all; }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+// ============================================================
+// STATE
+// ============================================================
+let state = { books: [] };
+/*
+  book: { id, title, author, chapters[] }
+  chapter: { id, number, title, publishDate, substackUrl,
+             teaser, chapter, dropNote,   // 'not_started'|'written'|'posted'
+             notes }
+*/
+
+let gh = { token: '', owner: '', repo: '', sha: null };
+let ui = {
+  tab: 'dashboard',
+  expanded: new Set(),
+  modal: null,   // { type, data }
+  syncMsg: '',
+  dirty: false,
+};
+
+// ============================================================
+// GITHUB API
+// ============================================================
+async function ghReq(path, opts = {}) {
+  return fetch('https://api.github.com' + path, {
+    ...opts,
+    headers: {
+      'Authorization': 'token ' + gh.token,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json',
+      ...(opts.headers || {}),
+    },
+  });
+}
+
+async function loadData() {
+  if (!gh.token) return;
+  setSync('Loading...');
+  try {
+    const res = await ghReq('/repos/' + gh.owner + '/' + gh.repo + '/contents/data.json');
+    if (res.status === 404) {
+      gh.sha = null;
+      setSync('Ready (empty)');
+    } else if (res.ok) {
+      const j = await res.json();
+      gh.sha = j.sha;
+      const raw = atob(j.content.replace(/\n/g, ''));
+      state = JSON.parse(raw);
+      setSync('Loaded ✓');
+    } else {
+      setSync('Load error ' + res.status);
+    }
+  } catch(e) {
+    setSync('Error: ' + e.message);
+  }
+  render();
+}
+
+async function saveData() {
+  if (!gh.token) { alert('Not connected to GitHub yet. Check Settings.'); return; }
+  setSync('Saving...');
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(state, null, 2))));
+  const body = { message: 'Update chapter tracker data', content };
+  if (gh.sha) body.sha = gh.sha;
+  try {
+    const res = await ghReq('/repos/' + gh.owner + '/' + gh.repo + '/contents/data.json', {
+      method: 'PUT', body: JSON.stringify(body),
+    });
+    if (res.ok) {
+      const j = await res.json();
+      gh.sha = j.content.sha;
+      ui.dirty = false;
+      setSync('Saved ✓');
+    } else {
+      const e = await res.json();
+      setSync('Save error: ' + (e.message || res.status));
+    }
+  } catch(e) {
+    setSync('Error: ' + e.message);
+  }
+  render();
+}
+
+function setSync(msg) {
+  ui.syncMsg = msg;
+  const el = document.getElementById('sync-status');
+  if (el) el.textContent = msg;
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function uid() { return Math.random().toString(36).substr(2, 9); }
+
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function fmtDate(d) {
+  if (!d) return '';
+  const dt = new Date(d + 'T12:00:00');
+  return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function daysUntil(d) {
+  if (!d) return null;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const t = new Date(d + 'T12:00:00');
+  return Math.ceil((t - today) / 86400000);
+}
+
+function loadGhSettings() {
+  gh.token = localStorage.getItem('ct_token') || '';
+  gh.owner = localStorage.getItem('ct_owner') || '';
+  gh.repo  = localStorage.getItem('ct_repo')  || '';
+}
+
+function saveGhSettings(token, owner, repo) {
+  gh.token = token; gh.owner = owner; gh.repo = repo;
+  localStorage.setItem('ct_token', token);
+  localStorage.setItem('ct_owner', owner);
+  localStorage.setItem('ct_repo',  repo);
+}
+
+function isReady() { return gh.token && gh.owner && gh.repo; }
+
+function markDirty() { ui.dirty = true; }
+
+const STATUS_LABELS = { not_started: 'Not Started', written: 'Written', posted: 'Posted' };
+const STATUSES = ['not_started', 'written', 'posted'];
+const FIELDS = ['teaser', 'chapter', 'dropNote'];
+const FIELD_LABELS = { teaser: 'Teaser Note', chapter: 'Chapter Post', dropNote: 'Drop Note' };
+
+// ============================================================
+// RENDER
+// ============================================================
+function render() {
+  document.getElementById('app').innerHTML = isReady() ? renderApp() : renderSetup();
+}
+
+function renderApp() {
+  return renderHeader() + renderNav() +
+    '<div class="content">' +
+      (ui.tab === 'dashboard' ? renderDashboard() : '') +
+      (ui.tab === 'books'     ? renderBooks()     : '') +
+      (ui.tab === 'settings'  ? renderSettings()  : '') +
+    '</div>' +
+    (ui.modal ? renderModal() : '');
+}
+
+function renderHeader() {
+  return `<div class="header">
+    <h1>Chapter Tracker</h1>
+    <div class="header-right">
+      <span class="sync-status" id="sync-status">${esc(ui.syncMsg)}</span>
+      <button class="btn-header" onclick="saveData()">Save</button>
+    </div>
+  </div>`;
+}
+
+function renderNav() {
+  const tabs = [['dashboard','Dashboard'],['books','Books'],['settings','Settings']];
+  return '<div class="nav-tabs">' +
+    tabs.map(([id,label]) =>
+      `<button class="nav-tab${ui.tab===id?' active':''}" onclick="setTab('${id}')">${label}</button>`
+    ).join('') +
+  '</div>';
+}
+
+// --- DASHBOARD ---
+function renderDashboard() {
+  const upcoming = [], inProgress = [];
+
+  for (const book of state.books) {
+    for (const ch of (book.chapters || [])) {
+      const allDone = FIELDS.every(f => ch[f] === 'posted');
+      const anyStarted = FIELDS.some(f => ch[f] !== 'not_started');
+      const days = daysUntil(ch.publishDate);
+
+      if (days !== null && days <= 30 && !allDone) {
+        upcoming.push({ book, ch, days });
+      } else if (anyStarted && !allDone) {
+        inProgress.push({ book, ch });
+      }
+    }
+  }
+  upcoming.sort((a,b) => a.days - b.days);
+
+  if (!upcoming.length && !inProgress.length) {
+    return `<div class="empty-state">
+      <div class="icon">📚</div>
+      <p>Nothing yet. Head to <strong>Books</strong> to add your first book and chapters.</p>
+    </div>`;
+  }
+
+  let html = '';
+
+  if (upcoming.length) {
+    html += '<div class="section-label">Upcoming — next 30 days</div>';
+    html += upcoming.map(({book, ch, days}) => upcomingCard(book, ch, days)).join('');
+  }
+
+  if (inProgress.length) {
+    html += `<div class="section-label${upcoming.length ? ' section-gap' : ''}">In Progress</div>`;
+    html += inProgress.map(({book, ch}) => upcomingCard(book, ch, null)).join('');
+  }
+
+  return html;
+}
+
+function upcomingCard(book, ch, days) {
+  let dateStr = '';
+  if (days !== null) {
+    if (days === 0) dateStr = 'Today';
+    else if (days < 0) dateStr = Math.abs(days) + 'd ago';
+    else dateStr = 'In ' + days + ' day' + (days===1?'':'s');
+    if (ch.publishDate) dateStr += ' · ' + fmtDate(ch.publishDate);
+  } else if (ch.publishDate) {
+    dateStr = fmtDate(ch.publishDate);
+  }
+
+  return `<div class="upcoming-card" onclick="openChapter('${book.id}','${ch.id}')">
+    <div class="uc-book">${esc(book.title)}</div>
+    <div class="uc-title">Ch. ${ch.number}${ch.title ? ': ' + esc(ch.title) : ''}</div>
+    ${dateStr ? `<div class="uc-date">${esc(dateStr)}</div>` : ''}
+    <div class="uc-chips">
+      <span class="chip ${ch.teaser}">Teaser: ${STATUS_LABELS[ch.teaser]}</span>
+      <span class="chip ${ch.chapter}">Post: ${STATUS_LABELS[ch.chapter]}</span>
+      <span class="chip ${ch.dropNote}">Drop Note: ${STATUS_LABELS[ch.dropNote]}</span>
+    </div>
+  </div>`;
+}
+
+// --- BOOKS ---
+function renderBooks() {
+  let html = `<button class="btn btn-primary" style="margin-bottom:14px" onclick="openModal('add-book',{})">+ Add Book</button>`;
+  if (!state.books.length) {
+    html += `<div class="empty-state"><div class="icon">📖</div><p>No books yet. Add one to get started.</p></div>`;
+    return html;
+  }
+  html += state.books.map(renderBookCard).join('');
+  return html;
+}
+
+function renderBookCard(book) {
+  const chs = book.chapters || [];
+  const total = chs.length;
+  const done  = chs.filter(c => FIELDS.every(f => c[f] === 'posted')).length;
+  const pct   = total ? Math.round(done / total * 100) : 0;
+  const open  = ui.expanded.has(book.id);
+
+  return `<div class="card">
+    <div class="card-header" onclick="toggleBook('${book.id}')">
+      <div>
+        <div class="book-title">${esc(book.title)}</div>
+        ${book.author ? `<div class="book-author">${esc(book.author)}</div>` : ''}
+      </div>
+      <div class="book-right">
+        <div class="book-progress">${done}/${total} chapters</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+        <div style="margin-top:6px"><span class="chevron${open?' open':''}">▼</span></div>
+      </div>
+    </div>
+    ${open ? `<div class="card-body">
+      ${!chs.length ? `<p style="color:var(--text-muted);font-size:13px;padding:10px 0">No chapters yet.</p>` : ''}
+      ${chs.map(ch => renderChapterRow(book, ch)).join('')}
+      <div class="btn-row" style="padding-top:6px">
+        <button class="btn btn-ghost btn-sm" onclick="openModal('add-chapter',{bookId:'${book.id}'})">+ Chapter</button>
+        <button class="btn btn-ghost btn-sm" onclick="openModal('edit-book',{bookId:'${book.id}'})">Edit Book</button>
+      </div>
+    </div>` : ''}
+  </div>`;
+}
+
+function renderChapterRow(book, ch) {
+  return `<div class="chapter-item" onclick="openChapter('${book.id}','${ch.id}')">
+    <div class="ch-num">Ch.${ch.number}</div>
+    <div class="ch-info">
+      <div class="ch-name">${esc(ch.title || '(Untitled)')}</div>
+      ${ch.publishDate ? `<div class="ch-date">${fmtDate(ch.publishDate)}</div>` : ''}
+    </div>
+    <div class="ch-dots" title="Teaser / Post / Drop Note">
+      <div class="dot ${ch.teaser}" title="Teaser"></div>
+      <div class="dot ${ch.chapter}" title="Chapter Post"></div>
+      <div class="dot ${ch.dropNote}" title="Drop Note"></div>
+    </div>
+  </div>`;
+}
+
+// --- SETTINGS ---
+function renderSettings() {
+  return `<div class="card">
+    <div class="card-header" style="cursor:default"><div class="book-title">GitHub Sync</div></div>
+    <div class="card-body card-body-pad">
+      <div class="form-group">
+        <label class="form-label">GitHub Username</label>
+        <input class="form-input" id="s-owner" value="${esc(gh.owner)}" placeholder="your-username">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Repository Name</label>
+        <input class="form-input" id="s-repo" value="${esc(gh.repo)}" placeholder="substack-tracker">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Personal Access Token</label>
+        <input class="form-input" id="s-token" type="password" value="${esc(gh.token)}" placeholder="ghp_...">
+        <div class="hint">Needs <strong>repo</strong> scope. Stored only in your browser — never sent anywhere except GitHub's API.</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="applySettings()">Save Settings</button>
+        <button class="btn btn-ghost" onclick="loadData()">Reload from GitHub</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// --- SETUP SCREEN ---
+function renderSetup() {
+  return `<div class="setup-wrap">
+    <div class="setup-card">
+      <h2>Chapter Tracker</h2>
+      <p class="sub">Connect to a GitHub repository to store and sync your data across all your devices. Create a new empty repo on GitHub first, then fill in the details below.</p>
+      <div class="form-group">
+        <label class="form-label">GitHub Username</label>
+        <input class="form-input" id="su-owner" placeholder="your-username">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Repository Name</label>
+        <input class="form-input" id="su-repo" placeholder="substack-tracker">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Personal Access Token</label>
+        <input class="form-input" id="su-token" type="password" placeholder="ghp_...">
+        <div class="hint">
+          GitHub → Settings → Developer settings → Personal access tokens → Generate new token.<br>
+          Select <strong>repo</strong> scope. Token is stored only in this browser.
+        </div>
+      </div>
+      <button class="btn btn-primary" style="width:100%;margin-top:4px" onclick="submitSetup()">Connect & Load</button>
+    </div>
+  </div>`;
+}
+
+// --- MODALS ---
+function renderModal() {
+  const { type, data } = ui.modal;
+
+  if (type === 'add-book' || type === 'edit-book') {
+    const book = type === 'edit-book' ? state.books.find(b => b.id === data.bookId) : null;
+    return `<div class="overlay" onclick="overlayClose(event)"><div class="modal">
+      <div class="modal-title">${type === 'add-book' ? 'Add Book' : 'Edit Book'}</div>
+      <div class="form-group">
+        <label class="form-label">Title</label>
+        <input class="form-input" id="m-title" value="${book ? esc(book.title) : ''}" placeholder="Book title">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Author</label>
+        <input class="form-input" id="m-author" value="${book ? esc(book.author||'') : ''}" placeholder="Author name">
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="${type==='add-book' ? 'doAddBook()' : `doSaveBook('${data.bookId}')`}">${type==='add-book' ? 'Add Book' : 'Save'}</button>
+        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+        ${type==='edit-book' ? `<button class="btn btn-danger btn-sm ml-auto" onclick="doDeleteBook('${data.bookId}')">Delete</button>` : ''}
+      </div>
+    </div></div>`;
+  }
+
+  if (type === 'add-chapter') {
+    const nextNum = getNextNum(data.bookId);
+    return `<div class="overlay" onclick="overlayClose(event)"><div class="modal">
+      <div class="modal-title">Add Chapter</div>
+      <div class="form-group">
+        <label class="form-label">Chapter Number</label>
+        <input class="form-input" id="m-num" type="number" value="${nextNum}" min="1">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Chapter Title <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+        <input class="form-input" id="m-title" placeholder="e.g. The First Storm">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Target Publish Date</label>
+        <input class="form-input" id="m-date" type="date">
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="doAddChapter('${data.bookId}')">Add Chapter</button>
+        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      </div>
+    </div></div>`;
+  }
+
+  if (type === 'edit-chapter') {
+    const book = state.books.find(b => b.id === data.bookId);
+    const ch   = book?.chapters?.find(c => c.id === data.chapterId);
+    if (!ch) return '';
+
+    const contentBlocks = FIELDS.map(field => {
+      const contentId = `m-content-${field}`;
+      const bodyId    = `cb-body-${field}`;
+      const statusBtns = STATUSES.map(s =>
+        `<button class="sbtn${ch[field]===s?' active-'+s:''}" onclick="setStatus('${data.bookId}','${data.chapterId}','${field}','${s}')">${STATUS_LABELS[s]}</button>`
+      ).join('');
+      const contentKey = field + 'Content';
+      return `<div class="content-block">
+        <div class="content-block-header" onclick="toggleBlock('${bodyId}')">
+          <span class="content-block-label">${FIELD_LABELS[field]}</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="chip ${ch[field]}" style="pointer-events:none">${STATUS_LABELS[ch[field]]}</span>
+            <span class="chevron" id="chv-${bodyId}">▼</span>
+          </div>
+        </div>
+        <div class="content-block-body" id="${bodyId}" style="display:none">
+          <div class="status-row">
+            <div class="status-label">Status</div>
+            <div class="status-btns">${statusBtns}</div>
+          </div>
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Draft / Content <span style="font-weight:400;text-transform:none;letter-spacing:0">— paste links, text, anything to copy into Substack</span></label>
+            <textarea class="form-input" id="${contentId}" style="min-height:90px" placeholder="Paste links, draft text, notes to copy into Substack...">${esc(ch[contentKey]||'')}</textarea>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+
+    return `<div class="overlay" onclick="overlayClose(event)"><div class="modal">
+      <div class="modal-title">Chapter ${ch.number}${ch.title ? ': ' + esc(ch.title) : ''}</div>
+      <div class="form-group">
+        <label class="form-label">Chapter Number</label>
+        <input class="form-input" id="m-num" type="number" value="${ch.number}" min="1">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Chapter Title</label>
+        <input class="form-input" id="m-title" value="${esc(ch.title||'')}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Target Publish Date</label>
+        <input class="form-input" id="m-date" type="date" value="${ch.publishDate||''}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Substack URL <span style="font-weight:400;text-transform:none;letter-spacing:0">(once live)</span></label>
+        <input class="form-input" id="m-url" type="url" value="${esc(ch.substackUrl||'')}" placeholder="https://...">
+      </div>
+      <div class="status-section">
+        <div class="status-section-title">Content &amp; Status</div>
+        ${contentBlocks}
+      </div>
+      <div class="form-group" style="margin-top:14px">
+        <label class="form-label">Notes</label>
+        <textarea class="form-input" id="m-notes" placeholder="Any notes for this chapter...">${esc(ch.notes||'')}</textarea>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="doSaveChapter('${data.bookId}','${data.chapterId}')">Save</button>
+        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-danger btn-sm ml-auto" onclick="doDeleteChapter('${data.bookId}','${data.chapterId}')">Delete</button>
+      </div>
+    </div></div>`;
+  }
+
+  return '';
+}
+
+// ============================================================
+// ACTIONS
+// ============================================================
+function setTab(t) { ui.tab = t; render(); }
+
+function toggleBook(id) {
+  ui.expanded.has(id) ? ui.expanded.delete(id) : ui.expanded.add(id);
+  render();
+}
+
+function openModal(type, data) { ui.modal = { type, data }; render(); }
+function closeModal() { ui.modal = null; render(); }
+function overlayClose(e) { if (e.target === e.currentTarget) closeModal(); }
+function openChapter(bookId, chapterId) { openModal('edit-chapter', { bookId, chapterId }); }
+
+function toggleBlock(bodyId) {
+  const el  = document.getElementById(bodyId);
+  const chv = document.getElementById('chv-' + bodyId);
+  if (!el) return;
+  const open = el.style.display !== 'none';
+  el.style.display  = open ? 'none' : 'block';
+  if (chv) chv.classList.toggle('open', !open);
+}
+
+function getNextNum(bookId) {
+  const book = state.books.find(b => b.id === bookId);
+  if (!book?.chapters?.length) return 1;
+  return Math.max(...book.chapters.map(c => c.number)) + 1;
+}
+
+function doAddBook() {
+  const title  = document.getElementById('m-title').value.trim();
+  const author = document.getElementById('m-author').value.trim();
+  if (!title) return;
+  state.books.push({ id: uid(), title, author, chapters: [] });
+  markDirty(); closeModal();
+}
+
+function doSaveBook(bookId) {
+  const book = state.books.find(b => b.id === bookId);
+  if (!book) return;
+  const title = document.getElementById('m-title').value.trim();
+  if (title) book.title = title;
+  book.author = document.getElementById('m-author').value.trim();
+  markDirty(); closeModal();
+}
+
+function doDeleteBook(bookId) {
+  if (!confirm('Delete this book and all its chapters?')) return;
+  state.books = state.books.filter(b => b.id !== bookId);
+  markDirty(); closeModal();
+}
+
+function doAddChapter(bookId) {
+  const book = state.books.find(b => b.id === bookId);
+  if (!book) return;
+  book.chapters.push({
+    id: uid(),
+    number:         parseInt(document.getElementById('m-num').value) || 1,
+    title:          document.getElementById('m-title').value.trim(),
+    publishDate:    document.getElementById('m-date').value,
+    substackUrl:    '',
+    teaser:         'not_started',
+    chapter:        'not_started',
+    dropNote:       'not_started',
+    teaserContent:  '',
+    chapterContent: '',
+    dropNoteContent:'',
+    notes:          '',
+  });
+  book.chapters.sort((a,b) => a.number - b.number);
+  markDirty(); closeModal();
+}
+
+function doSaveChapter(bookId, chapterId) {
+  const book = state.books.find(b => b.id === bookId);
+  const ch   = book?.chapters?.find(c => c.id === chapterId);
+  if (!ch) return;
+  ch.number          = parseInt(document.getElementById('m-num').value) || ch.number;
+  ch.title           = document.getElementById('m-title').value.trim();
+  ch.publishDate     = document.getElementById('m-date').value;
+  ch.substackUrl     = document.getElementById('m-url').value.trim();
+  ch.notes           = document.getElementById('m-notes').value;
+  // content drafts
+  const tc = document.getElementById('m-content-teaser');
+  const cc = document.getElementById('m-content-chapter');
+  const dc = document.getElementById('m-content-dropNote');
+  if (tc) ch.teaserContent   = tc.value;
+  if (cc) ch.chapterContent  = cc.value;
+  if (dc) ch.dropNoteContent = dc.value;
+  book.chapters.sort((a,b) => a.number - b.number);
+  markDirty(); closeModal();
+}
+
+function doDeleteChapter(bookId, chapterId) {
+  if (!confirm('Delete this chapter?')) return;
+  const book = state.books.find(b => b.id === bookId);
+  if (!book) return;
+  book.chapters = book.chapters.filter(c => c.id !== chapterId);
+  markDirty(); closeModal();
+}
+
+function setStatus(bookId, chapterId, field, value) {
+  const book = state.books.find(b => b.id === bookId);
+  const ch   = book?.chapters?.find(c => c.id === chapterId);
+  if (!ch) return;
+  ch[field] = value;
+  markDirty();
+  render(); // re-render so button highlights update immediately
+}
+
+function submitSetup() {
+  const owner = document.getElementById('su-owner').value.trim();
+  const repo  = document.getElementById('su-repo').value.trim();
+  const token = document.getElementById('su-token').value.trim();
+  if (!owner || !repo || !token) { alert('Please fill in all three fields.'); return; }
+  saveGhSettings(token, owner, repo);
+  loadData();
+}
+
+function applySettings() {
+  const owner = document.getElementById('s-owner').value.trim();
+  const repo  = document.getElementById('s-repo').value.trim();
+  const token = document.getElementById('s-token').value.trim();
+  saveGhSettings(token, owner, repo);
+  gh.sha = null;
+  loadData();
+}
+
+// ============================================================
+// INIT
+// ============================================================
+loadGhSettings();
+render();
+if (isReady()) loadData();
+</script>
+</body>
+</html>
